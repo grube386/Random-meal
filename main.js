@@ -3,7 +3,7 @@ const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack']
 //This wil generate a new object and add it to the txt file
 function mealGenerator(type, name, link, picture) {
     //checks that all of the inputs are strings
-    let breaker = false;
+    let breaker = false; //variable to check if the function needs to break
     for (let i = 0; i < arguments.length; i++){
         if (!(typeof(arguments[i]) === 'string')){
             console.log(arguments[i] + ' is not a string.\n' +
@@ -21,6 +21,17 @@ function mealGenerator(type, name, link, picture) {
         return;
     }
 
+    //check if link and picture start with http
+    if (!link.startsWith('http')) {
+        console.log('The link doesn\'t seem to be a valid URL');
+        return;
+    }
+
+    if (!picture.startsWith('http')) {
+        console.log('The picture link doesn\'t seem to be a valid URL');
+        return;
+    }
+
     return {
         _num:'',
         name,
@@ -33,5 +44,5 @@ function mealGenerator(type, name, link, picture) {
 
 }
 
-const test = mealGenerator('Breakfastgit',42, 'fdasf', 'fd');
+const test = mealGenerator('Lunch','fdsf', 'http://link', 'http://picture');
 console.log(test);
