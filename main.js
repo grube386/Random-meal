@@ -26,13 +26,13 @@ function mealGenerator(type, name, link, picture) {
         console.log('The link doesn\'t seem to be a valid URL');
         return;
     }
-
     if (!picture.startsWith('http')) {
         console.log('The picture link doesn\'t seem to be a valid URL');
         return;
     }
 
-    return {
+    //create an object
+    return  {
         _num:'',
         name,
         type,
@@ -44,5 +44,41 @@ function mealGenerator(type, name, link, picture) {
 
 }
 
-const test = mealGenerator('Lunch','fdsf', 'http://link', 'http://picture');
-console.log(test);
+const test1 = mealGenerator("Lunch","fdsf", "http://link", "http://picture");
+const test2 = mealGenerator("Breakfast","something", "http://link2", "http://picture3");
+
+const testArr = [test1, test2];
+//console.log(test);
+
+function createCSV (arr) {
+    let row = 0; //row being worked on
+    let fullPropLen = 0; //full number of properties
+    let objectArray; //array created from the object
+    let csvString = '';
+    for (const obj of arr ) {
+        objectArray = Object.entries(obj); //assign value
+        fullPropLen = objectArray.length; //assign value
+        let currPropNum = 0; //property being written down at the moment
+        let headerStr = '';
+        let valueStr = '';
+        //loop through the object
+        for (const [key, value] of objectArray) {
+            if (row === 0) { //for the first row it creates headers and adds values
+                headerStr += key;
+                headerStr += currPropNum + 1 < fullPropLen ? ',' : '\n'; //adds a semicolon or new line to the string depending on which property is writtern
+                valueStr += value;
+                valueStr += currPropNum + 1 < fullPropLen ? ',' : '\n'; //adds a semicolon or new line to the string depending on which property is writtern
+                currPropNum++;
+            } else {
+                csvString += value; //adds the key to the string
+                csvString += currPropNum + 1 < fullPropLen ? ',' : '\n' //adds a semicolon or new line to the string depending on which property is writtern
+                headerStr = '';
+                currPropNum++;
+            }
+        }
+        csvString += headerStr + valueStr; //adds the created strings to the csvString
+        row++; //goes to the next row
+    }
+}
+
+createCSV(testArr);
