@@ -67,13 +67,13 @@ function createCSV (arr) {
         for (const [key, value] of objectArray) {
             if (row === 0) { //for the first row it creates headers and adds values
                 headerStr += key;
-                headerStr += currPropNum + 1 < fullPropLen ? ',' : '\n'; //adds a semicolon or new line to the string depending on which property is written
+                headerStr += currPropNum + 1 < fullPropLen ? ';' : '\n'; //adds a semicolon or new line to the string depending on which property is written
                 valueStr += value;
-                valueStr += currPropNum + 1 < fullPropLen ? ',' : '\n'; //adds a semicolon or new line to the string depending on which property is written
+                valueStr += currPropNum + 1 < fullPropLen ? ';' : '\n'; //adds a semicolon or new line to the string depending on which property is written
                 currPropNum++;
             } else {
                 csvString += value; //adds the key to the string
-                csvString += currPropNum + 1 < fullPropLen ? ',' : '\n' //adds a semicolon or new line to the string depending on which property is written
+                csvString += currPropNum + 1 < fullPropLen ? ';' : '\n' //adds a semicolon or new line to the string depending on which property is written
                 headerStr = '';
                 currPropNum++;
             }
@@ -84,6 +84,13 @@ function createCSV (arr) {
     return csvString;
 }
 
+//saves the string to a CSV file
+function saveCsvToFile (string) {
+    const fs = require('fs');
+    fs.writeFile('meals.csv', string, "utf-8", function (err){
+        if (err) return console.log(err);
+        console.log("File written");
+    });
+}
 
-
-createCSV(testArr);
+saveCsvToFile(createCSV(testArr));
