@@ -106,7 +106,30 @@ function readCSV () {
     }
 }
 
+//convert CSVstring  to an array of objects
+function csvStringToObjects (string) {
+    //split string into rows using \n
+    const meals = [];
+    const meal = {};
+    const allRows = string.split('\n');
+    //checks that there is at least one entry in the csv + headers
+    if (allRows.length < 2) return console.log('There is not enough data in the file.')
+    //creates a header array
+    const headers = allRows[0].split(';');
+    //loops through the res of the rows
+    allRows.forEach((rowData, rowIndex) => {
+        if (rowIndex === 0) return;
+        const lineArray = rowData.split(';');
+        //loop through all of the values in a row
+        lineArray.forEach((entry, lineIndex) => {
+            meal[headers[lineIndex]] = entry;
+        })
+        meals.push(meal);
+    })
+    return meals;
+}
 
 
 const string = readCSV();
+console.log(csvStringToObjects(string));
 let dsfas = 1;
