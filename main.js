@@ -87,10 +87,26 @@ function createCSV (arr) {
 //saves the string to a CSV file
 function saveCsvToFile (string) {
     const fs = require('fs');
-    fs.writeFile('meals.csv', string, "utf-8", function (err){
-        if (err) return console.log(err);
-        console.log("File written");
-    });
+    try {
+        fs.writeFileSync('meals.csv', string, "utf-8");
+        console.log('File written.')
+    } catch (err) {
+        console.error(err);
+    }
+
 }
 
-saveCsvToFile(createCSV(testArr));
+//reads from the CSV file
+function readCSV () {
+    const fs = require('fs');
+    try {
+        return fs.readFileSync('meals.csv', "utf-8");
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
+
+const string = readCSV();
+let dsfas = 1;
