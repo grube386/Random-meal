@@ -99,11 +99,15 @@ function saveCsvToFile (string) {
 //reads from the CSV file
 function readCSV () {
     const fs = require('fs');
+    let string = '';
     try {
-        return fs.readFileSync('meals.csv', "utf-8");
+        string = fs.readFileSync('meals.csv', "utf-8");
     } catch (err) {
         console.error(err);
     }
+    //remove \r if included
+    string = string.replaceAll('\r', '');
+    return string;
 }
 
 //convert CSVstring  to an array of objects
