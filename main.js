@@ -1,4 +1,6 @@
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack']
+//creates a meals array of objects
+const meals = csvStringToObjects(readCSV());
 
 //This wil generate a new object and add it to the txt file
 function mealGenerator(type, name, link, picture) {
@@ -43,13 +45,6 @@ function mealGenerator(type, name, link, picture) {
     }
 
 }
-
-//two test meals being generated
-const test1 = mealGenerator("Lunch","fdsf", "http://link", "http://picture");
-const test2 = mealGenerator("Breakfast","something", "http://link2", "http://picture3");
-
-//test array with two meals
-const testArr = [test1, test2];
 
 //creates a CSV compatible string from the objects in the array
 function createCSV (arr) {
@@ -123,17 +118,19 @@ function csvStringToObjects (string) {
     //loops through the res of the rows
     allRows.forEach((rowData, rowIndex) => {
         if (rowIndex === 0) return;
+        if (!rowData.includes(";")) return;
         const lineArray = rowData.split(';');
         //loop through all of the values in a row
         lineArray.forEach((entry, lineIndex) => {
             meal[headers[lineIndex]] = entry;
         })
-        meals.push(meal);
+        meals.push({...meal});
     })
     return meals;
 }
 
 
+
 const string = readCSV();
-console.log(csvStringToObjects(string));
+console.log(meals);
 let dsfas = 1;
