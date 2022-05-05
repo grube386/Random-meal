@@ -129,8 +129,19 @@ function csvStringToObjects (string) {
     return meals;
 }
 
+//select a random object from an array
+function selectRandomMeal(meals, type = "Lunch") {
+    //create different arrays with no date, date, and by type
+    const mealsByType = meals.filter(meal => meal.type === type);
+    const newMeals = meals.filter(meal => !meal.lastUsed);
+    const usedMeals = meals.filter(meal => meal.lastUsed);
+    //get the median date
+    const usedDates = usedMeals.map(meal => Date.parse(meal.lastUsed));
+    return usedDates;
+}
 
 
-const string = readCSV();
-console.log(meals);
-let dsfas = 1;
+console.log(selectRandomMeal(meals))
+var fasd = 1;
+
+console.log(Date.parse("12.5.2022"))
