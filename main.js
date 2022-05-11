@@ -47,12 +47,12 @@ function mealGenerator(type, name, link, picture) {
 }
 
 //creates a CSV compatible string from the objects in the array
-function createCSV (arr) {
+function createCSV (meals) {
     let row = 0; //row being worked on
     let fullPropLen = 0; //full number of properties
     let objectArray; //array created from the object
     let csvString = '';
-    for (const obj of arr ) {
+    for (const obj of meals ) {
         objectArray = Object.entries(obj); //assign value
         fullPropLen = objectArray.length; //assign value
         let currPropNum = 0; //property being written down at the moment
@@ -147,3 +147,11 @@ function selectRandomMeal(meals, type = "Lunch") {
     return raffle[Math.floor(Math.random() * raffle.length)];
 }
 
+//update the chosen meal with today's date
+function updateMeals (meal) {
+    //update the meals array
+    const index = meals.findIndex(element => (element._num === meal._num && element.name === meal.name));
+    const now = new Date(Date.now());
+    const dateStr = `${now.getMonth() + 1}.${now.getDate()}.${now.getFullYear()}`;
+    meals[index].lastUsed = dateStr;
+}
