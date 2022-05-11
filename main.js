@@ -132,16 +132,18 @@ function csvStringToObjects (string) {
 //select a random object from an array
 function selectRandomMeal(meals, type = "Lunch") {
     //create different arrays with no date, date, and by type
-    const mealsByType = meals.filter(meal => meal.type === type);
-    const newMeals = meals.filter(meal => !meal.lastUsed);
-    const usedMeals = meals.filter(meal => meal.lastUsed);
-    //get the median date
-    const usedDates = usedMeals.map(meal => Date.parse(meal.lastUsed));
-    return usedDates;
+    const newMeals = meals.filter(meal => !meal.lastUsed && meal.type === type);
+    const usedMeals = meals.filter(meal => meal.lastUsed && meal.type === type);
+    //get the average date
+    const usedDates = usedMeals.map(meal => Date.parse(meal.lastUsed)).sort();
+    const averageDate = usedDates.reduce((prev, curr) => prev + curr) / usedDates.length;
+    const thirdsDate = usedDates[Math.floor(usedDates.length/3) * 2];
+    //get the non favorite and favorite meals older than the date
+    const nonFavMeals = usedMeals.filter(meal => ((Date.parse(meal.lastUsed) <= averageDate)) && meal.favorite !== 'TRUE');
+    const favMeals = usedMeals.filter(meal => ((Date.parse(meal.lastUsed) <= thirdsDate)) && meal.favorite === 'TRUE');
+    //create a pool of all eligible meals (nonFav, fav, 3x new)
+    const raffle = [...newMeals, ...nonFavMeals, ... newMeals, ...favMeals, ...newMeals]
+    //select a random meal
+    return raffle[Math.floor(Math.random() * raffle.length)];
 }
 
-
-console.log(selectRandomMeal(meals))
-var fasd = 1;
-
-console.log(Date.parse("12.5.2022"))
