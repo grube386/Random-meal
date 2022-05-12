@@ -2,6 +2,10 @@ const prompt = require('prompt-sync')({sigint: true});
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack']
 let correct = false;
 let strMealTypes = '';
+let mealType;
+//creates a meals array of objects
+const meals = csvStringToObjects(readCSV());
+
 mealTypes.forEach((el, index) => strMealTypes += `${index + 1} - ${el}\n`);
 strMealTypes = strMealTypes.substring(0,strMealTypes.length - 1);
 
@@ -13,8 +17,42 @@ console.log('Hello Matej, I see that you are hungry :)\n' +
 //while loop so that the correct selection is made
 do
 {
-    selectMealType(prompt("Input your selection: "));
+    mealType = selectMealType(prompt("Input your selection: "));
 } while (correct === false)
+
+//selects and prints the meal and loops until the customer is happy
+let satisfied = false;
+do {
+    const selectedMeal = selectRandomMeal(meals, mealType);
+    console.log(selectedMeal);
+    console.log('Are you satisfied with the meal that was selected?\n' +
+        'Y - Yes \n' +
+        'N - No')
+    let input;
+
+    //checks the correct inputs
+    do {
+        correct = false;
+        input = prompt("Please select an option: ").trim()
+        if (['y', 'Y', 'n', 'N'].includes(input)){
+            correct = true;
+        } else {
+            console.log('You need to input n or y. \n' +
+                'Please try again\n')
+        }
+    } while (correct === false)
+
+    //will store the date if yes is selected and rerun if no is selected
+    if (input === 'y' || input === 'Y'){
+        //update the meals
+        updateMeals(selectedMeal);
+        //save the updates to the file
+        saveCsvToFile(createCSV(meals));
+        satisfied = true;
+    } else {
+        console.log('Here is a new option:')
+    }
+} while (satisfied === false)
 
 //checking if the correct input was done and select the meal type
 function selectMealType(input) {
@@ -31,9 +69,6 @@ function selectMealType(input) {
         correct = false;
     }
 }
-
-//creates a meals array of objects
-const meals = csvStringToObjects(readCSV());
 
 //This wil generate a new object and add it to the txt file
 function mealGenerator(type, name, link, picture) {
