@@ -1,4 +1,37 @@
+const prompt = require('prompt-sync')({sigint: true});
 const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack']
+let correct = false;
+let strMealTypes = '';
+mealTypes.forEach((el, index) => strMealTypes += `${index + 1} - ${el}\n`);
+strMealTypes = strMealTypes.substring(0,strMealTypes.length - 1);
+
+
+//starting up the program and selecting the meal type
+console.log('Hello Matej, I see that you are hungry :)\n' +
+    'What meal would you like to eat?\n' +
+    strMealTypes)
+//while loop so that the correct selection is made
+do
+{
+    selectMealType(prompt("Input your selection: "));
+} while (correct === false)
+
+//checking if the correct input was done and select the meal type
+function selectMealType(input) {
+    correct = false;
+    const maxRange = mealTypes.length;
+    const number = Number(input.trim());
+    //checks if the number is correct
+    if (number >= 1 && number <= maxRange){
+        correct = true;
+        return mealTypes[number - 1];
+    } else {
+        console.log(`You need to enter a number between 1 and ${maxRange}.\n` +
+        `Try again.`);
+        correct = false;
+    }
+}
+
 //creates a meals array of objects
 const meals = csvStringToObjects(readCSV());
 
@@ -154,4 +187,5 @@ function updateMeals (meal) {
     const now = new Date(Date.now());
     const dateStr = `${now.getMonth() + 1}.${now.getDate()}.${now.getFullYear()}`;
     meals[index].lastUsed = dateStr;
+    return meals;
 }
